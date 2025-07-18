@@ -18,19 +18,12 @@ public class Equipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(nullable = false, unique = true)
     private String nom;
     
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Joueur> joueurs;
-    
-    @Column(nullable = false)
     private Integer nbVictoires = 0;
-    
-    @Column(nullable = false)
     private Integer nbDefaites = 0;
-    
-    @Column(nullable = false)
     private Integer points = 0;
     
     @ManyToOne(fetch = FetchType.LAZY)

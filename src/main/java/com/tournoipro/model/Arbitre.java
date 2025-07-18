@@ -17,8 +17,6 @@ public class Arbitre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false)
     private String nom;
     
     @ManyToOne(fetch = FetchType.LAZY)
