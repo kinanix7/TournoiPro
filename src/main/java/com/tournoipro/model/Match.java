@@ -18,7 +18,11 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(nullable = false)
     private LocalDate date;
+    
+    @Column(nullable = false)
     private LocalTime heure;
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,12 +40,18 @@ public class Match {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arbitre_id")
     private Arbitre arbitre;
+    
+    @Column
     private Integer scoreEquipe1;
+    
+    @Column
     private Integer scoreEquipe2;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poule_id", nullable = false)
     private Poule poule;
+    
+    @Column(nullable = false)
     private Boolean termine = false;
 }
 

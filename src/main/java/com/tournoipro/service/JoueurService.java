@@ -84,4 +84,3 @@ public class JoueurService {
         joueurRepository.deleteById(id);
     }
 }
-

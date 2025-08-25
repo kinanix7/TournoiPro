@@ -17,10 +17,12 @@ public class Arbitre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(nullable = false)
     private String nom;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "equipe_liee_id")
+    @JoinColumn(name = "equipe_liee_id", nullable = true)
     private Equipe equipeLiee;
     
     @OneToMany(mappedBy = "arbitre", cascade = CascadeType.ALL)

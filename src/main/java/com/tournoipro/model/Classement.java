@@ -19,9 +19,17 @@ public class Classement {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipe_id", nullable = false)
     private Equipe equipe;
+    
+    @Column(nullable = false)
     private Integer points = 0;
+    
+    @Column(nullable = false)
     private Integer victoire = 0;
+    
+    @Column(nullable = false)
     private Integer defaite = 0;
+    
+    @Column(nullable = false)
     private Integer position = 0;
 }
 

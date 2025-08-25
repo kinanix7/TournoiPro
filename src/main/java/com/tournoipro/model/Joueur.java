@@ -15,10 +15,15 @@ public class Joueur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(nullable = false)
     private String nom;
+    
+    @Column(nullable = false)
     private String role;
     
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TypeJoueur type;
     
     @ManyToOne(fetch = FetchType.LAZY)

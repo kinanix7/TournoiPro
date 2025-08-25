@@ -7,15 +7,13 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {EquipeMapper.class})
+@Mapper(componentModel = "spring")
 public interface PouleMapper {
-    
+
     PouleMapper INSTANCE = Mappers.getMapper(PouleMapper.class);
-    
+
     PouleDto toDto(Poule poule);
     Poule toEntity(PouleDto pouleDto);
-    
     List<PouleDto> toDtoList(List<Poule> poules);
     List<Poule> toEntityList(List<PouleDto> pouleDtos);
 }
-

@@ -99,4 +99,3 @@ public class EquipeService {
         equipeRepository.save(equipe);
     }
 }
-
