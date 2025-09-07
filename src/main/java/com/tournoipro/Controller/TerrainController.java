@@ -1,7 +1,8 @@
-package com.tournoipro.controller;
+package com.tournoipro.Controller;
 
 import com.tournoipro.model.Terrain;
 import com.tournoipro.service.TerrainService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/terrains")
 @AllArgsConstructor
+@Tag(name = "Terrains", description = "Court management APIs")
+
 public class TerrainController {
 
     private final TerrainService terrainService;

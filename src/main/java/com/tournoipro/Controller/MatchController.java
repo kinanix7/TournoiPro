@@ -2,12 +2,15 @@ package com.tournoipro.Controller;
 
 import com.tournoipro.model.Match;
 import com.tournoipro.service.MatchService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/matches")
+@Tag(name = "Matchs", description = "Match management APIs")
+
 public class MatchController {
 
     private final MatchService matchService;

@@ -2,13 +2,14 @@ package com.tournoipro.Controller;
 
 import com.tournoipro.model.Arbitre;
 import com.tournoipro.service.ArbitreService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/arbitres")
+@Tag(name = "Arbitres", description = "Referee management APIs")
 
 
 public class ArbitreController {

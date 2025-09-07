@@ -2,6 +2,7 @@ package com.tournoipro.Controller;
 
 import com.tournoipro.model.Joueur;
 import com.tournoipro.service.JoueurService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/joueurs")
 @AllArgsConstructor
+@Tag(name = "Joueurs", description = "Player management APIs")
+
 public class JoueurController{
 
     private final JoueurService joueurService;

@@ -1,13 +1,16 @@
-package com.tournoipro.controller;
+package com.tournoipro.Controller;
 
 import com.tournoipro.model.Equipe;
 import com.tournoipro.service.EquipeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/equipes")
+@Tag(name = "Equipes", description = "Team management APIs")
+
 public class EquipeController {
 
     private final EquipeService equipeService;

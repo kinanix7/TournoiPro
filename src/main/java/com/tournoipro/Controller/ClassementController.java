@@ -2,12 +2,15 @@ package com.tournoipro.Controller;
 
 import com.tournoipro.model.Classement;
 import com.tournoipro.service.ClassementService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/classements")
+@Tag(name = "Classements", description = "Ranking management APIs")
+
 public class ClassementController {
 
     private final ClassementService classementService;
