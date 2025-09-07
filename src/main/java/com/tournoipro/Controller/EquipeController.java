@@ -2,7 +2,9 @@ package com.tournoipro.Controller;
 
 import com.tournoipro.model.Equipe;
 import com.tournoipro.service.EquipeService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +34,21 @@ public class EquipeController {
     @GetMapping("/{id}")
     public Equipe getEquipeById(@PathVariable Long id) {
         return equipeService.getEquipeById(id);
+    }
+
+    @GetMapping("/equipes/{nom}")
+    public List<Equipe> getEquipesByNom(@PathVariable String nom) {
+        return equipeService.getEquipesByName(nom);
+    }
+
+    @GetMapping("/poule/{pouleId}")
+    public List<Equipe> getEquipesByPoule(@PathVariable Long pouleId) {
+        return  equipeService.getEquipesByPoule(pouleId);
+    }
+
+    @GetMapping("/sans-poule")
+    public List<Equipe> getEquipesSansPoule() {
+        return  equipeService.getEquipesSansPoule();
     }
 
     @PutMapping("/{id}")

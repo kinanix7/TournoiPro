@@ -28,6 +28,10 @@ public class EquipeService {
                 .orElseThrow(() -> new RuntimeException("Equipe non trouvée avec id=" + id));
     }
 
+    public List<Equipe> getEquipesByName(String nom) {
+        return equipeRepository.findByNom(nom);
+    }
+
     public Equipe updateEquipe(Long id, Equipe equipeDetails) {
         Equipe equipe = getEquipeById(id);
         equipe.setNom(equipeDetails.getNom());
@@ -50,5 +54,13 @@ public class EquipeService {
 
     public long getEquipesCount() {
         return equipeRepository.countEquipes();
+    }
+
+    public List<Equipe> getEquipesByPoule(Long pouleId) {
+        return equipeRepository.findByPouleId(pouleId);
+    }
+
+    public List<Equipe> getEquipesSansPoule() {
+        return equipeRepository.findEquipesSansPoule();
     }
 }
