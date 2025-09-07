@@ -28,4 +28,3 @@ public class Arbitre {
     @OneToMany(mappedBy = "arbitre", cascade = CascadeType.ALL)
     private List<Match> matchs;
 }
-
