@@ -1,9 +1,12 @@
 package com.tournoipro.Controller;
 
 import com.tournoipro.model.Joueur;
+import com.tournoipro.model.TypeJoueur;
 import com.tournoipro.service.JoueurService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,5 +49,21 @@ public class JoueurController{
     @GetMapping("/count/joueurs")
     public long countJoueurs() {
         return joueurService.getJoueursCount();
+    }
+
+    @GetMapping("/type/{type}")
+    public List<Joueur> getJoueursByType(@PathVariable TypeJoueur type) {
+        return joueurService.getJoueurByType(type);
+
+    }
+
+    @GetMapping("/search")
+    public List<Joueur> searchJoueursByNom(@RequestParam String nom) {
+        return  joueurService.searchJoueursByNom(nom);
+    }
+
+    @GetMapping("/equipes/{equipeId}/joueurs")
+    public List<Joueur> getJoueursByEquipeId(@PathVariable Long equipeId) {
+        return joueurService.getJoueursByEquipeId(equipeId);
     }
 }

@@ -1,6 +1,7 @@
 package com.tournoipro.service;
 
 import com.tournoipro.model.Joueur;
+import com.tournoipro.model.TypeJoueur;
 import com.tournoipro.repository.JoueurRepository;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,18 @@ public class JoueurService {
 
     public long getJoueursCount() {
         return joueurRepository.countJoueurs();
+    }
+
+    public List<Joueur> getJoueurByType(TypeJoueur type) {
+        return joueurRepository.findByType(type);
+
+    }
+
+    public List<Joueur> searchJoueursByNom(String nom) {
+        return joueurRepository.findByNomContainingIgnoreCase(nom);
+    }
+
+    public List<Joueur> getJoueursByEquipeId(Long equipeId) {
+        return joueurRepository.getJoueursByEquipeId(equipeId);
     }
 }
