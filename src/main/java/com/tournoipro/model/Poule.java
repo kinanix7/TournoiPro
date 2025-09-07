@@ -1,5 +1,7 @@
 package com.tournoipro.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +24,11 @@ public class Poule {
     private String nom;
 
     @OneToMany(mappedBy = "poule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Equipe> equipes;
 
     @OneToMany(mappedBy = "poule", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Match> matchs;
 }
 

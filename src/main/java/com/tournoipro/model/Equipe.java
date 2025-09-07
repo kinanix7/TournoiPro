@@ -1,5 +1,7 @@
 package com.tournoipro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +24,7 @@ public class Equipe {
     private String nom;
 
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Joueur> joueurs;
 
     @Column(nullable = false)
@@ -35,15 +38,19 @@ public class Equipe {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poule_id")
+    @JsonBackReference
     private Poule poule;
 
     @OneToMany(mappedBy = "equipe1", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Match> matchsEquipe1;
 
     @OneToMany(mappedBy = "equipe2", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Match> matchsEquipe2;
 
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Classement> classements;
 }
 

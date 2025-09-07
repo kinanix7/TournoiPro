@@ -1,5 +1,6 @@
 package com.tournoipro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class Classement {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipe_id", nullable = false)
+    @JsonBackReference
     private Equipe equipe;
 
     @Column(nullable = false)

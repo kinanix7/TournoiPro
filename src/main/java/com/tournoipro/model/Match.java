@@ -1,5 +1,6 @@
 package com.tournoipro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,18 +28,22 @@ public class Match {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipe1_id", nullable = false)
+    @JsonBackReference
     private Equipe equipe1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipe2_id", nullable = false)
+    @JsonBackReference
     private Equipe equipe2;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "terrain_id", nullable = false)
+    @JsonBackReference
     private Terrain terrain;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arbitre_id")
+    @JsonBackReference
     private Arbitre arbitre;
 
     @Column
@@ -49,6 +54,7 @@ public class Match {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poule_id", nullable = false)
+    @JsonBackReference
     private Poule poule;
 
     @Column(nullable = false)

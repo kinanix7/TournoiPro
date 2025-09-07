@@ -1,5 +1,7 @@
 package com.tournoipro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +25,10 @@ public class Arbitre {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipe_liee_id")
+    @JsonIgnore
     private Equipe equipeLiee;
 
     @OneToMany(mappedBy = "arbitre", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Match> matchs;
 }
