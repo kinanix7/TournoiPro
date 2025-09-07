@@ -44,4 +44,8 @@ public class ArbitreService {
                 .orElseThrow(() -> new RuntimeException("Arbitre non trouvé avec id " + id));
         arbitreRepository.delete(arbitre);
     }
+
+    public long getArbitresCount() {
+        return arbitreRepository.countArbitres();
+    }
 }

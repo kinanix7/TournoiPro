@@ -43,4 +43,9 @@ public class EquipeController {
     public void deleteEquipe(@PathVariable Long id) {
         equipeService.deleteEquipe(id);
     }
+
+    @GetMapping("/count/equipes")
+    public long countEquipes() {
+        return equipeService.getEquipesCount();
+    }
 }

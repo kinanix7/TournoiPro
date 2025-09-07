@@ -43,4 +43,9 @@ public class TerrainController {
     public void deleteTerrain(@PathVariable Long id) {
         terrainService.deleteTerrain(id);
     }
+
+    @GetMapping("/count/terrains")
+    public long countTerrains() {
+        return terrainService.getTerrainsCount();
+    }
 }

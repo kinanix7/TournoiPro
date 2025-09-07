@@ -46,4 +46,9 @@ public class EquipeService {
         Equipe equipe = getEquipeById(id);
         equipeRepository.delete(equipe);
     }
+
+
+    public long getEquipesCount() {
+        return equipeRepository.countEquipes();
+    }
 }

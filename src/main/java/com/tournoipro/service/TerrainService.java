@@ -41,4 +41,8 @@ public class TerrainService {
         Terrain terrain = getTerrainById(id);
         terrainRepository.delete(terrain);
     }
+
+    public long getTerrainsCount() {
+        return terrainRepository.countTerrains();
+    }
 }

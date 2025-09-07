@@ -42,4 +42,8 @@ public class JoueurService {
         Joueur joueur = getJoueurById(id);
         joueurRepository.delete(joueur);
     }
+
+    public long getJoueursCount() {
+        return joueurRepository.countJoueurs();
+    }
 }

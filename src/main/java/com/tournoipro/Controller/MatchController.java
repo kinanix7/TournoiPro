@@ -44,4 +44,9 @@ public class MatchController {
     public void deleteMatch(@PathVariable Long id) {
         matchService.deleteMatch(id);
     }
+
+    @GetMapping("/count/matchs")
+    public long countMatchs() {
+        return matchService.getMatchsCount();
+    }
 }

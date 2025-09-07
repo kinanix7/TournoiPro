@@ -42,4 +42,9 @@ public class JoueurController{
     public void deleteJoueur(@PathVariable Long id) {
         joueurService.deleteJoueur(id);
     }
+
+    @GetMapping("/count/joueurs")
+    public long countJoueurs() {
+        return joueurService.getJoueursCount();
+    }
 }

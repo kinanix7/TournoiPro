@@ -47,4 +47,8 @@ public class MatchService {
         Match match = getMatchById(id);
         matchRepository.delete(match);
     }
+
+    public long getMatchsCount() {
+        return matchRepository.countMatchs();
+    }
 }

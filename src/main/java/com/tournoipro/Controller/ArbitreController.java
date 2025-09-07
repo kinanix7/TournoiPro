@@ -47,4 +47,9 @@ public class ArbitreController {
         arbitreService.deleteArbitre(id);
         return "Arbitre supprimé avec succès (id=" + id + ")";
     }
+
+    @GetMapping("/count/arbitres")
+    public long countArbitres() {
+        return arbitreService.getArbitresCount();
+    }
 }
