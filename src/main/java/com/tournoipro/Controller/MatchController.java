@@ -2,7 +2,9 @@ package com.tournoipro.Controller;
 
 import com.tournoipro.model.Match;
 import com.tournoipro.service.MatchService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,5 +50,11 @@ public class MatchController {
     @GetMapping("/count/matchs")
     public long countMatchs() {
         return matchService.getMatchsCount();
+    }
+
+    @GetMapping("/termines")
+    public List<Match> getMatchsTermines() {
+        return matchService.getMatchsTermines();
+
     }
 }

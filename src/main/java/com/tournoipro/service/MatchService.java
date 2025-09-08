@@ -51,4 +51,8 @@ public class MatchService {
     public long getMatchsCount() {
         return matchRepository.countMatchs();
     }
+
+    public List<Match> getMatchsTermines (){
+        return matchRepository.findByTermine(true);
+    }
 }
