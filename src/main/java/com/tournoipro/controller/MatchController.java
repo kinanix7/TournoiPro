@@ -2,10 +2,14 @@ package com.tournoipro.controller;
 
 import com.tournoipro.model.Match;
 import com.tournoipro.service.MatchService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -61,6 +65,22 @@ public class MatchController {
     @GetMapping("/termines")
     public List<Match> getMatchsTermines() {
         return matchService.getMatchsTermines();
+
+    }
+
+
+    @GetMapping("/date/{date}")
+    public List<Match> getMatchsByDate(
+         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return matchService.getMatchsByDate(date);
+    }
+
+
+    @GetMapping("/periode")
+    public List<Match> getMatchsBetweenDates(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateDebut,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFin) {
+        return matchService.getMatchsBetweenDates(dateDebut, dateFin);
 
     }
 }

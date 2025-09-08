@@ -4,6 +4,7 @@ import com.tournoipro.model.Match;
 import com.tournoipro.repository.MatchRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -54,5 +55,13 @@ public class MatchService {
 
     public List<Match> getMatchsTermines (){
         return matchRepository.findByTermine(true);
+    }
+
+    public List<Match> getMatchsByDate(LocalDate date) {
+        return matchRepository.findByDate(date);
+    }
+
+    public List<Match> getMatchsBetweenDates(LocalDate dateDebut, LocalDate dateFin) {
+        return matchRepository.findMatchsBetweenDates(dateDebut , dateFin);
     }
 }
