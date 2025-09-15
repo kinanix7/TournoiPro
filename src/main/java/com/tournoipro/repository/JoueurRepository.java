@@ -24,5 +24,12 @@ public interface JoueurRepository extends JpaRepository<Joueur, Long> {
 
     @Query(value = "SELECT * FROM joueurs WHERE equipe_id = :equipeId", nativeQuery = true)
     List<Joueur> getJoueursByEquipeId(Long equipeId);
+
+    @Query("SELECT j FROM Joueur j WHERE j.equipe IS NULL")
+    List<Joueur> findUnassignedPlayers();
+
+    @Query("SELECT new com.tournoipro.dto.JoueurWithTeamDto(j.id, j.nom, j.role, j.type, e.id, e.nom) " +
+           "FROM Joueur j LEFT JOIN j.equipe e")
+    List<com.tournoipro.dto.JoueurWithTeamDto> findAllJoueursWithTeamInfo();
 }
 
