@@ -1,0 +1,217 @@
+<app-navigation></app-navigation>
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="h2 mb-4">
+        <i class="bi bi-house-door me-2"></i>Dashboard
+      </h1>
+    </div>
+  </div>
+  
+  <!-- Quick Stats -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Total Matches</h6>
+              <h3 class="mb-0">{{ allMatches.length }}</h3>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-calendar-event fs-2 opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Completed</h6>
+              <h3 class="mb-0">{{ completedMatches.length }}</h3>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-check-circle fs-2 opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Upcoming</h6>
+              <h3 class="mb-0">{{ upcomingMatches.length }}</h3>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-clock fs-2 opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Teams</h6>
+              <h3 class="mb-0">{{ rankings.length }}</h3>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-people fs-2 opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <!-- Upcoming Matches -->
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-calendar-event me-2"></i>Upcoming Matches
+          </h5>
+          <a routerLink="/matches" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <div class="card-body">
+          <div *ngIf="isLoading" class="text-center py-3">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          
+          <div *ngIf="!isLoading && upcomingMatches.length === 0" class="text-center py-3 text-muted">
+            <i class="bi bi-calendar-x fs-1 d-block mb-2"></i>
+            No upcoming matches scheduled
+          </div>
+          
+          <div *ngIf="!isLoading && upcomingMatches.length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Teams</th>
+                  <th>Court</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let match of upcomingMatches.slice(0, 5)">
+                  <td>{{ formatDate(match.date) }}</td>
+                  <td>{{ match.heure }}</td>
+                  <td>
+                    <span class="badge bg-primary me-1">{{ getTeamName(match, 1) }}</span>
+                    <span class="text-muted">vs</span>
+                    <span class="badge bg-secondary ms-1">{{ getTeamName(match, 2) }}</span>
+                  </td>
+                  <td>{{ getCourtName(match) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Rankings -->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-trophy me-2"></i>Top Rankings
+          </h5>
+          <a routerLink="/rankings" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <div class="card-body">
+          <div *ngIf="isLoading" class="text-center py-3">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          
+          <div *ngIf="!isLoading && rankings.length === 0" class="text-center py-3 text-muted">
+            <i class="bi bi-trophy fs-1 d-block mb-2"></i>
+            No rankings available
+          </div>
+          
+          <div *ngIf="!isLoading && rankings.length > 0">
+            <div *ngFor="let ranking of rankings.slice(0, 5); let i = index" 
+                 class="d-flex justify-content-between align-items-center py-2 border-bottom">
+              <div class="d-flex align-items-center">
+                <span class="badge bg-{{ getRankingBadgeColor(i) }} me-2">{{ i + 1 }}</span>
+                <span class="fw-bold">{{ ranking.equipe.nom }}</span>
+              </div>
+              <div class="text-end">
+                <small class="text-muted d-block">{{ ranking.points }} pts</small>
+                <small class="text-success">{{ ranking.victoire }}W</small>
+                <small class="text-danger ms-1">{{ ranking.defaite }}L</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Recent Results -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-check-circle me-2"></i>Recent Results
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!isLoading && completedMatches.length === 0" class="text-center py-3 text-muted">
+            <i class="bi bi-calendar-check fs-1 d-block mb-2"></i>
+            No completed matches yet
+          </div>
+          
+          <div *ngIf="!isLoading && completedMatches.length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Teams</th>
+                  <th>Score</th>
+                  <th>Court</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let match of completedMatches.slice(0, 5)">
+                  <td>{{ formatDate(match.date) }}</td>
+                  <td>
+                    <span class="fw-bold">{{ getTeamName(match, 1) }}</span>
+                    <span class="text-muted mx-2">vs</span>
+                    <span class="fw-bold">{{ getTeamName(match, 2) }}</span>
+                  </td>
+                  <td>
+                    <span class="badge bg-{{ getScoreBadgeColor(match.scoreEquipe1, match.scoreEquipe2, true) }}">
+                      {{ match.scoreEquipe1 }}
+                    </span>
+                    <span class="mx-2">-</span>
+                    <span class="badge bg-{{ getScoreBadgeColor(match.scoreEquipe1, match.scoreEquipe2, false) }}">
+                      {{ match.scoreEquipe2 }}
+                    </span>
+                  </td>
+                  <td>{{ getCourtName(match) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

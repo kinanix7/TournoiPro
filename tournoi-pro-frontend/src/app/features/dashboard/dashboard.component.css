@@ -1,0 +1,28 @@
+.card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.badge {
+  font-size: 0.875em;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  color: #495057;
+}
+
+.fs-2 {
+  font-size: 2rem !important;
+}
+
+.opacity-75 {
+  opacity: 0.75 !important;
+}

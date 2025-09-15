@@ -1,0 +1,47 @@
+.match-card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.match-card:hover {
+  transform: translateY(-2px);
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  color: #495057;
+}
+
+.table-success {
+  background-color: rgba(25, 135, 84, 0.1);
+}
+
+.badge {
+  font-size: 0.875em;
+}
+
+.fs-2 {
+  font-size: 2rem !important;
+}
+
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+
+.text-success {
+  color: #198754 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}

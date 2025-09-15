@@ -1,0 +1,103 @@
+.podium-item {
+  padding: 1.5rem;
+  position: relative;
+}
+
+.podium-rank {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.rank-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.gold-rank i {
+  color: #ffd700;
+}
+
+.silver-rank i {
+  color: #c0c0c0;
+}
+
+.bronze-rank i {
+  color: #cd7f32;
+}
+
+.podium-stats {
+  margin-top: 1rem;
+}
+
+.ranking-row {
+  transition: background-color 0.2s ease;
+}
+
+.ranking-row:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.rank-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.team-info h6 {
+  font-size: 1.1rem;
+}
+
+.win-rate {
+  min-width: 80px;
+}
+
+.progress {
+  border-radius: 10px;
+}
+
+.progress-bar {
+  border-radius: 10px;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  color: #495057;
+}
+
+.table-light {
+  background-color: #f8f9fa;
+}
+
+.fs-2 {
+  font-size: 2rem !important;
+}
+
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+
+.top-3-highlight {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.top-5-highlight {
+  background-color: rgba(13, 202, 240, 0.1);
+}

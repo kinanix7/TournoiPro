@@ -1,0 +1,56 @@
+.court-card {
+  transition: transform 0.2s ease-in-out;
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.court-card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-item h6 {
+  font-size: 1.1rem;
+}
+
+.court-info {
+  border-left: 3px solid #007bff;
+  padding-left: 1rem;
+}
+
+.next-match-info .border {
+  border-color: #dee2e6 !important;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+
+.fs-2 {
+  font-size: 2rem !important;
+}
+
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  color: #495057;
+}

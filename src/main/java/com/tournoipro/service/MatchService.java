@@ -41,9 +41,6 @@ public class MatchService {
     }
 
     public MatchDto createMatch(Match match) {
-        // Validate match data
-        validateMatch(match);
-        
         // Set the poule based on team poules
         setMatchPoule(match);
         
@@ -80,9 +77,6 @@ public class MatchService {
     public MatchDto updateMatch(Long id, Match matchDetails) {
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Match non trouvé avec id=" + id));
-        
-        // Validate the updated match details
-        validateMatch(matchDetails);
         
         // Check for conflicts if date, time, or terrain changed
         if (!match.getDate().equals(matchDetails.getDate()) ||
@@ -164,56 +158,6 @@ public class MatchService {
     }
     
     // Validation methods
-    private void validateMatch(Match match) {
-        if (match == null) {
-            throw new IllegalArgumentException("Match cannot be null");
-        }
-        
-        if (match.getDate() == null) {
-            throw new IllegalArgumentException("Match date is required");
-        }
-        
-        if (match.getHeure() == null) {
-            throw new IllegalArgumentException("Match time is required");
-        }
-        
-        if (match.getEquipe1() == null || match.getEquipe2() == null) {
-            throw new IllegalArgumentException("Both teams are required");
-        }
-        
-        if (match.getEquipe1().getId().equals(match.getEquipe2().getId())) {
-            throw new IllegalArgumentException("A team cannot play against itself");
-        }
-        
-        if (match.getTerrain() == null) {
-            throw new IllegalArgumentException("Court is required");
-        }
-        
-        // Validate that teams exist
-        if (!equipeRepository.existsById(match.getEquipe1().getId())) {
-            throw new IllegalArgumentException("Team 1 does not exist");
-        }
-        
-        if (!equipeRepository.existsById(match.getEquipe2().getId())) {
-            throw new IllegalArgumentException("Team 2 does not exist");
-        }
-        
-        // Validate that court exists
-        if (!terrainRepository.existsById(match.getTerrain().getId())) {
-            throw new IllegalArgumentException("Court does not exist");
-        }
-        
-        // Validate arbitre if provided
-        if (match.getArbitre() != null && !arbitreRepository.existsById(match.getArbitre().getId())) {
-            throw new IllegalArgumentException("Referee does not exist");
-        }
-        
-        // Date should not be in the past (for new matches)
-        if (match.getId() == null && match.getDate().isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Match date cannot be in the past");
-        }
-    }
-    
 
     private void setMatchPoule(Match match) {
         Equipe equipe1 = match.getEquipe1();

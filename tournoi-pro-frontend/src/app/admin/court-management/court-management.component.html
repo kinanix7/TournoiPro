@@ -1,0 +1,222 @@
+<app-navigation></app-navigation>
+
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">
+          <i class="bi bi-geo-alt me-2"></i>Court Management
+        </h1>
+        <button 
+          type="button" 
+          class="btn btn-primary"
+          data-bs-toggle="modal" 
+          data-bs-target="#courtModal"
+          (click)="openCreateModal()">
+          <i class="bi bi-plus-circle me-1"></i>Add Court
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Search and Filters -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-search me-2"></i>Search & Filters
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="searchName" class="form-label">Search by Name</label>
+              <input 
+                type="text" 
+                id="searchName" 
+                class="form-control" 
+                placeholder="Enter court name"
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()">
+            </div>
+            <div class="col-md-4">
+              <label for="searchLocation" class="form-label">Search by Location</label>
+              <input 
+                type="text" 
+                id="searchLocation" 
+                class="form-control" 
+                placeholder="Enter location"
+                [(ngModel)]="locationSearch"
+                (input)="applyFilters()">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button 
+                type="button" 
+                class="btn btn-outline-secondary w-100"
+                (click)="clearFilters()">
+                <i class="bi bi-x-circle me-1"></i>Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Courts List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            Courts ({{ filteredCourts.length }})
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading courts...</p>
+          </div>
+          
+          <!-- No Courts -->
+          <div *ngIf="!isLoading && filteredCourts.length === 0" class="text-center py-5 text-muted">
+            <i class="bi bi-geo-alt-fill fs-1 d-block mb-3"></i>
+            <h4>No courts found</h4>
+            <p>No courts match your search criteria.</p>
+          </div>
+          
+          <!-- Courts Grid -->
+          <div *ngIf="!isLoading && filteredCourts.length > 0" class="row">
+            <div *ngFor="let court of filteredCourts" class="col-lg-6 col-xl-4 mb-4">
+              <div class="card court-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h6 class="mb-0 fw-bold">{{ court.nom }}</h6>
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                            data-bs-toggle="dropdown">
+                      <i class="bi bi-three-dots"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" href="#" 
+                           data-bs-toggle="modal" 
+                           data-bs-target="#courtModal"
+                           (click)="openEditModal(court)">
+                          <i class="bi bi-pencil me-2"></i>Edit Court
+                        </a>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <a class="dropdown-item text-danger" href="#" 
+                           (click)="deleteCourt(court)">
+                          <i class="bi bi-trash me-2"></i>Delete Court
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <!-- Court Info -->
+                  <div class="court-info mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                      <i class="bi bi-geo-alt me-2 text-primary"></i>
+                      <span class="text-muted">{{ court.localisation }}</span>
+                    </div>
+                  </div>
+                  
+                  <!-- Usage Statistics -->
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">Usage Statistics</label>
+                    <div class="row text-center">
+                      <div class="col-6">
+                        <div class="stat-item">
+                          <h6 class="text-primary mb-0">{{ getCourtMatchCount(court) }}</h6>
+                          <small class="text-muted">Total Matches</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Court ID: {{ court.id }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Court Modal -->
+<div class="modal fade" id="courtModal" tabindex="-1" #courtModal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-geo-alt me-2"></i>{{ isEditMode ? 'Edit Court' : 'Add New Court' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form (ngSubmit)="saveCourt()" #courtForm="ngForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="courtName" class="form-label">Court Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="courtName"
+              name="courtName"
+              [(ngModel)]="currentCourt.nom"
+              required
+              #courtName="ngModel"
+              [class.is-invalid]="courtName.invalid && courtName.touched">
+            <div *ngIf="courtName.invalid && courtName.touched" class="invalid-feedback">
+              Court name is required
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="courtLocation" class="form-label">Location *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="courtLocation"
+              name="courtLocation"
+              [(ngModel)]="currentCourt.localisation"
+              required
+              placeholder="e.g., Main Gymnasium, Building A - Floor 2"
+              #courtLocation="ngModel"
+              [class.is-invalid]="courtLocation.invalid && courtLocation.touched">
+            <div *ngIf="courtLocation.invalid && courtLocation.touched" class="invalid-feedback">
+              Court location is required
+            </div>
+            <div class="form-text">
+              Provide detailed location information to help players and referees find the court.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="courtForm.invalid || isSaving">
+            <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+            {{ isEditMode ? 'Update Court' : 'Create Court' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

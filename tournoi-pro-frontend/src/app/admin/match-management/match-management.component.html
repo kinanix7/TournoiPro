@@ -1,0 +1,294 @@
+<app-navigation></app-navigation>
+
+<!-- Success Message -->
+<div *ngIf="showSuccess" class="container-fluid mt-3">
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="dismissSuccessMessage()"></button>
+  </div>
+</div>
+
+<!-- Error Message -->
+<div *ngIf="showError" class="container-fluid mt-3">
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ errorMessage }}
+    <button type="button" class="btn-close" (click)="dismissErrorMessage()"></button>
+  </div>
+</div>
+
+<div class="container-fluid px-4 py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h3 mb-0">
+      <i class="bi bi-calendar-event me-2"></i>
+      Gestion des Matchs
+    </h2>
+    <div class="d-flex gap-2">
+      <button 
+        type="button" 
+        class="btn btn-outline-secondary"
+        (click)="refreshData()"
+        [disabled]="isLoading"
+        title="Refresh data">
+        <i class="bi" [class.bi-arrow-clockwise]="!isLoading" [class.bi-arrow-repeat]="isLoading" [class.spin]="isLoading"></i>
+        <span class="ms-1">Refresh</span>
+      </button>
+      <button 
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#matchModal"
+        (click)="openCreateModal()">
+        <i class="bi bi-plus-lg me-2"></i>
+        Programmer un Match
+      </button>
+    </div>
+  </div>
+
+  <!-- Match List -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Liste des Matchs</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Date & Heure</th>
+              <th>Équipes</th>
+              <th>Terrain</th>
+              <th>Arbitre</th>
+              <th>Score</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let match of matches">
+              <td>
+                <div class="fw-bold">{{formatDate(match.date)}}</div>
+                <small class="text-muted">{{match.heure}}</small>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <span class="badge bg-primary me-2">{{getTeamName(match, 1)}}</span>
+                  <span class="mx-2">vs</span>
+                  <span class="badge bg-secondary">{{getTeamName(match, 2)}}</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-info">{{getCourtName(match)}}</span>
+              </td>
+              <td>
+                <span class="badge bg-warning text-dark">{{getRefereeName(match)}}</span>
+              </td>
+              <td>
+                <div *ngIf="match.termine" class="fw-bold">
+                  {{match.scoreEquipe1}} - {{match.scoreEquipe2}}
+                </div>
+                <div *ngIf="!match.termine" class="text-muted">
+                  -
+                </div>
+              </td>
+              <td>
+                <span 
+                  class="badge"
+                  [ngClass]="{
+                    'bg-secondary': !match.termine,
+                    'bg-success': match.termine
+                  }">
+                  {{getStatusText(match.termine)}}
+                </span>
+              </td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button 
+                    class="btn btn-outline-primary"
+                    (click)="openEditModal(match)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#matchModal">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button 
+                    *ngIf="!match.termine"
+                    class="btn btn-outline-warning"
+                    (click)="openScoreModal(match)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#scoreModal">
+                    <i class="bi bi-trophy"></i>
+                  </button>
+                  <button 
+                    class="btn btn-outline-danger"
+                    (click)="deleteMatch(match.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <div class="h3 text-primary">{{getMatchCount('PROGRAMME')}}</div>
+          <div class="text-muted">Matchs Programmés</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <div class="h3 text-success">{{getMatchCount('TERMINE')}}</div>
+          <div class="text-muted">Matchs Terminés</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Match Modal -->
+<div class="modal fade" id="matchModal" tabindex="-1" #matchModal>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form [formGroup]="matchForm" (ngSubmit)="saveMatch()">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{selectedMatch ? 'Modifier le Match' : 'Programmer un Nouveau Match'}}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Date du Match *</label>
+              <input 
+                type="date" 
+                class="form-control"
+                formControlName="date"
+                [class.is-invalid]="matchForm.get('date')?.invalid && matchForm.get('date')?.touched">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Heure *</label>
+              <input 
+                type="time" 
+                class="form-control"
+                formControlName="heure"
+                [class.is-invalid]="matchForm.get('heure')?.invalid && matchForm.get('heure')?.touched">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Équipe 1 *</label>
+              <select 
+                class="form-select"
+                formControlName="equipe1Id"
+                [class.is-invalid]="matchForm.get('equipe1Id')?.invalid && matchForm.get('equipe1Id')?.touched">
+                <option value="">Sélectionner une équipe</option>
+                <option *ngFor="let team of teams" [value]="team.id">{{team?.nom || 'Unnamed Team'}}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Équipe 2 *</label>
+              <select 
+                class="form-select"
+                formControlName="equipe2Id"
+                [class.is-invalid]="matchForm.get('equipe2Id')?.invalid && matchForm.get('equipe2Id')?.touched">
+                <option value="">Sélectionner une équipe</option>
+                <option *ngFor="let team of getAvailableTeams()" [value]="team.id">{{team?.nom || 'Unnamed Team'}}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Terrain *</label>
+              <select 
+                class="form-select"
+                formControlName="terrainId"
+                [class.is-invalid]="matchForm.get('terrainId')?.invalid && matchForm.get('terrainId')?.touched">
+                <option value="">Sélectionner un terrain</option>
+                <option *ngFor="let court of courts" [value]="court.id">
+                  {{court?.nom || 'Unnamed Court'}} - {{court?.localisation || 'Unknown location'}}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Arbitre</label>
+              <select 
+                class="form-select"
+                formControlName="arbitreId">
+                <option value="">Sélectionner un arbitre</option>
+                <option *ngFor="let referee of referees" [value]="referee.id">
+                  {{referee?.nom || 'Unnamed Referee'}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annuler
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="matchForm.invalid || isSaving">
+            <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+            {{selectedMatch ? 'Modifier' : 'Programmer'}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Score Modal -->
+<div class="modal fade" id="scoreModal" tabindex="-1" #scoreModal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="scoreForm" (ngSubmit)="updateScore()">
+        <div class="modal-header">
+          <h5 class="modal-title">Saisir le Score</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedMatch">
+          <div class="text-center mb-4">
+            <h6>{{getTeamName(selectedMatch, 1)}} vs {{getTeamName(selectedMatch, 2)}}</h6>
+            <small class="text-muted">{{formatDate(selectedMatch.date)}} - {{selectedMatch.heure}}</small>
+          </div>
+          <div class="row g-3">
+            <div class="col-6 text-center">
+              <label class="form-label fw-bold">{{getTeamName(selectedMatch, 1)}}</label>
+              <input 
+                type="number" 
+                class="form-control form-control-lg text-center"
+                formControlName="scoreEquipe1"
+                min="0"
+                max="200">
+            </div>
+            <div class="col-6 text-center">
+              <label class="form-label fw-bold">{{getTeamName(selectedMatch, 2)}}</label>
+              <input 
+                type="number" 
+                class="form-control form-control-lg text-center"
+                formControlName="scoreEquipe2"
+                min="0"
+                max="200">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-success" [disabled]="isSaving">
+            <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+            Terminer le Match
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

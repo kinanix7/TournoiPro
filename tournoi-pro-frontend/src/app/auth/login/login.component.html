@@ -1,0 +1,82 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <div class="col-md-6 d-flex align-items-center justify-content-center bg-primary">
+      <div class="text-center text-white">
+        <h1 class="display-4 mb-4">🏀 TournoiProoo</h1>
+        <h3 class="mb-3">Basketball Tournament Management</h3>
+        <p class="lead">Manage your tournaments, teams, and matches with ease.</p>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
+        <div class="card-body p-5">
+          <h2 class="card-title text-center mb-4">Login</h2>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+          </div>
+          
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username or Email</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username" 
+                name="username"
+                [(ngModel)]="credentials.username"
+                required
+                #username="ngModel"
+                [class.is-invalid]="username.invalid && username.touched">
+              <div *ngIf="username.invalid && username.touched" class="invalid-feedback">
+                Username is required
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                name="password"
+                [(ngModel)]="credentials.password"
+                required
+                #password="ngModel"
+                [class.is-invalid]="password.invalid && password.touched">
+              <div *ngIf="password.invalid && password.touched" class="invalid-feedback">
+                Password is required
+              </div>
+            </div>
+            
+            <div class="mb-3 form-check">
+              <input 
+                type="checkbox" 
+                class="form-check-input" 
+                id="rememberMe" 
+                name="rememberMe"
+                [(ngModel)]="rememberMe">
+              <label class="form-check-label" for="rememberMe">
+                Remember me
+              </label>
+            </div>
+            
+            <button 
+              type="submit" 
+              class="btn btn-primary w-100 mb-3"
+              [disabled]="loginForm.invalid || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              {{ isLoading ? 'Signing in...' : 'Sign In' }}
+            </button>
+          </form>
+          
+          <div class="text-center">
+            <p class="mb-0">Don't have an account? 
+              <a routerLink="/register" class="text-decoration-none">Sign up here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

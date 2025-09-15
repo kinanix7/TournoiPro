@@ -1,0 +1,8 @@
+<!-- Force Admin Navigation -->
+<app-admin-navigation *ngIf="type === 'admin'"></app-admin-navigation>
+
+<!-- Force User Navigation -->
+<app-user-navigation *ngIf="type === 'user'"></app-user-navigation>
+
+<!-- Auto-detect Navigation (default behavior) -->
+<app-navigation *ngIf="type === 'auto'"></app-navigation>

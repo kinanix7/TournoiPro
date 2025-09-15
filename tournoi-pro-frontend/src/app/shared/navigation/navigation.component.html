@@ -1,0 +1,8 @@
+<!-- Show Admin Navigation for Admin users -->
+<app-admin-navigation *ngIf="isAdmin"></app-admin-navigation>
+
+<!-- Show User Navigation for regular users or when admin wants user view -->
+<app-user-navigation *ngIf="!isAdmin && currentUser"></app-user-navigation>
+
+<!-- Show User Navigation for non-authenticated users (login/register) -->
+<app-user-navigation *ngIf="!currentUser"></app-user-navigation>

@@ -1,0 +1,139 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <div class="col-md-6 d-flex align-items-center justify-content-center bg-primary">
+      <div class="text-center text-white">
+        <h1 class="display-4 mb-4">🏀 TournoiPro</h1>
+        <h3 class="mb-3">Join the Tournament</h3>
+        <p class="lead">Create your account to manage or view basketball tournaments.</p>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <div class="card shadow-lg" style="width: 100%; max-width: 450px;">
+        <div class="card-body p-5">
+          <h2 class="card-title text-center mb-4">Create Account</h2>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+          </div>
+          
+          <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username" 
+                name="username"
+                [(ngModel)]="registerData.username"
+                required
+                minlength="3"
+                #username="ngModel"
+                [class.is-invalid]="username.invalid && username.touched">
+              <div *ngIf="username.invalid && username.touched" class="invalid-feedback">
+                <div *ngIf="username.errors?.['required']">Username is required</div>
+                <div *ngIf="username.errors?.['minlength']">Username must be at least 3 characters</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                name="email"
+                [(ngModel)]="registerData.email"
+                required
+                email
+                #email="ngModel"
+                [class.is-invalid]="email.invalid && email.touched">
+              <div *ngIf="email.invalid && email.touched" class="invalid-feedback">
+                <div *ngIf="email.errors?.['required']">Email is required</div>
+                <div *ngIf="email.errors?.['email']">Please enter a valid email</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                name="password"
+                [(ngModel)]="registerData.password"
+                required
+                minlength="6"
+                #password="ngModel"
+                [class.is-invalid]="password.invalid && password.touched">
+              <div *ngIf="password.invalid && password.touched" class="invalid-feedback">
+                <div *ngIf="password.errors?.['required']">Password is required</div>
+                <div *ngIf="password.errors?.['minlength']">Password must be at least 6 characters</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="confirmPassword" 
+                name="confirmPassword"
+                [(ngModel)]="confirmPassword"
+                required
+                #confirmPasswordField="ngModel"
+                [class.is-invalid]="(confirmPasswordField.invalid && confirmPasswordField.touched) || 
+                                   (registerData.password !== confirmPassword && confirmPassword.length > 0)">
+              <div *ngIf="(confirmPasswordField.invalid && confirmPasswordField.touched) || 
+                         (registerData.password !== confirmPassword && confirmPassword.length > 0)" 
+                   class="invalid-feedback">
+                <div *ngIf="confirmPasswordField.errors?.['required']">Please confirm your password</div>
+                <div *ngIf="registerData.password !== confirmPassword && confirmPassword.length > 0">
+                  Passwords do not match
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="role" class="form-label">Account Type</label>
+              <select 
+                class="form-select" 
+                id="role" 
+                name="role"
+                [(ngModel)]="registerData.role"
+                required
+                #role="ngModel"
+                [class.is-invalid]="role.invalid && role.touched">
+                <option value="">Select account type</option>
+                <option [value]="Role.USER">User (View Only)</option>
+                <option [value]="Role.ADMIN">Administrator (Full Access)</option>
+              </select>
+              <div *ngIf="role.invalid && role.touched" class="invalid-feedback">
+                Please select an account type
+              </div>
+              <div class="form-text">
+                <small>
+                  <strong>User:</strong> View matches, rankings, and tournament information<br>
+                  <strong>Administrator:</strong> Manage teams, players, matches, and tournament settings
+                </small>
+              </div>
+            </div>
+            
+            <button 
+              type="submit" 
+              class="btn btn-primary w-100 mb-3"
+              [disabled]="registerForm.invalid || registerData.password !== confirmPassword || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+            </button>
+          </form>
+          
+          <div class="text-center">
+            <p class="mb-0">Already have an account? 
+              <a routerLink="/login" class="text-decoration-none">Sign in here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

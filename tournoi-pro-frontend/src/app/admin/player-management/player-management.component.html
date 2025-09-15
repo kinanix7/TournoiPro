@@ -1,0 +1,270 @@
+<app-navigation></app-navigation>
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">
+          <i class="bi bi-people me-2"></i>Player Management
+        </h1>
+        <button 
+          type="button" 
+          class="btn btn-primary"
+          data-bs-toggle="modal" 
+          data-bs-target="#playerModal"
+          (click)="openCreateModal()">
+          <i class="bi bi-person-plus me-1"></i>Add Player
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Filters and Search -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-funnel me-2"></i>Filters & Search
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="searchName" class="form-label">Search by Name</label>
+              <input 
+                type="text" 
+                id="searchName" 
+                class="form-control" 
+                placeholder="Enter player name"
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()">
+            </div>
+            <div class="col-md-3">
+              <label for="filterType" class="form-label">Player Type</label>
+              <select 
+                id="filterType" 
+                class="form-select" 
+                [(ngModel)]="selectedType"
+                (change)="applyFilters()">
+                <option value="">All Types</option>
+                <option value="ELEVE">Student</option>
+                <option value="PROFESSEUR">Teacher</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="filterTeam" class="form-label">Team Status</label>
+              <select 
+                id="filterTeam" 
+                class="form-select" 
+                [(ngModel)]="teamFilter"
+                (change)="applyFilters()">
+                <option value="">All Players</option>
+                <option value="assigned">Assigned to Team</option>
+                <option value="unassigned">Not Assigned</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button 
+                type="button" 
+                class="btn btn-outline-secondary w-100"
+                (click)="clearFilters()">
+                <i class="bi bi-x-circle me-1"></i>Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Players List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            Players ({{ filteredPlayers.length }})
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- No Players -->
+          <div *ngIf="filteredPlayers.length === 0" class="text-center py-5 text-muted">
+            <i class="bi bi-person-x fs-1 d-block mb-3"></i>
+            <h4>No players found</h4>
+            <p>No players match your search criteria.</p>
+          </div>
+          
+          <!-- Players Table -->
+          <div *ngIf="filteredPlayers.length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Type</th>
+                  <th>Team</th>
+                  <th>Status</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let player of filteredPlayers">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar me-3">
+                        <i class="bi bi-person-circle fs-3 text-muted"></i>
+                      </div>
+                      <div>
+                        <h6 class="mb-0">{{ player.nom }}</h6>
+                        <small class="text-muted">ID: {{ player.id }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ player.role }}</td>
+                  <td>
+                    <span class="badge" 
+                          [class]="player.type === 'ELEVE' ? 'bg-primary' : 'bg-info'">
+                      {{ player.type === 'ELEVE' ? 'Student' : 'Teacher' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="player.equipe" class="badge bg-success">
+                      {{ player.equipe.nom }}
+                    </span>
+                    <span *ngIf="!player.equipe" class="text-muted">
+                      <i class="bi bi-dash-circle me-1"></i>No Team
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" 
+                          [class]="player.equipe ? 'bg-success' : 'bg-warning'">
+                      {{ player.equipe ? 'Assigned' : 'Available' }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <button 
+                        type="button" 
+                        class="btn btn-outline-primary"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#playerModal"
+                        (click)="openEditModal(player)"
+                        title="Edit Player">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button 
+                        type="button" 
+                        class="btn btn-outline-danger"
+                        (click)="deletePlayer(player)"
+                        title="Delete Player">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Player Modal -->
+<div class="modal fade" id="playerModal" tabindex="-1" #playerModal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-person me-2"></i>{{ isEditMode ? 'Edit Player' : 'Add New Player' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form (ngSubmit)="savePlayer()" #playerForm="ngForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="playerName" class="form-label">Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="playerName"
+              name="playerName"
+              [(ngModel)]="currentPlayer.nom"
+              required
+              #playerName="ngModel"
+              [class.is-invalid]="playerName.invalid && playerName.touched">
+            <div *ngIf="playerName.invalid && playerName.touched" class="invalid-feedback">
+              Player name is required
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="playerRole" class="form-label">Role *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="playerRole"
+              name="playerRole"
+              [(ngModel)]="currentPlayer.role"
+              required
+              placeholder="e.g., Point Guard, Center, Forward"
+              #playerRole="ngModel"
+              [class.is-invalid]="playerRole.invalid && playerRole.touched">
+            <div *ngIf="playerRole.invalid && playerRole.touched" class="invalid-feedback">
+              Player role is required
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="playerType" class="form-label">Type *</label>
+            <select 
+              class="form-select" 
+              id="playerType"
+              name="playerType"
+              [(ngModel)]="currentPlayer.type"
+              required
+              #playerType="ngModel"
+              [class.is-invalid]="playerType.invalid && playerType.touched">
+              <option value="">Select player type</option>
+              <option value="ELEVE">Student</option>
+              <option value="PROFESSEUR">Teacher</option>
+            </select>
+            <div *ngIf="playerType.invalid && playerType.touched" class="invalid-feedback">
+              Please select a player type
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="playerTeam" class="form-label">Team (Optional)</label>
+            <select 
+              class="form-select" 
+              id="playerTeam"
+              name="playerTeam"
+              [(ngModel)]="selectedTeamId">
+              <option value="">No Team</option>
+              <option *ngFor="let team of availableTeams" [value]="team.id">
+                {{ team.nom }} ({{ (team.joueurs && team.joueurs.length) || 0 }}/8 players)
+              </option>
+            </select>
+            <div class="form-text">
+              Players can be assigned to teams later if needed.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="playerForm.invalid">
+            {{ isEditMode ? 'Update Player' : 'Create Player' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
