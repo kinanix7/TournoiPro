@@ -85,7 +85,6 @@ export class AuthService {
     localStorage.removeItem(this.SESSION_KEY);
     this.currentUserSubject.next(null);
     
-    // Navigate to login page
     this.router.navigate(['/login']);
   }
 

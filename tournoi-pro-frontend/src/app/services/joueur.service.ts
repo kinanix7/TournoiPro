@@ -25,28 +25,23 @@ export class JoueurService {
   }
 
   createJoueur(joueur: Partial<JoueurWithTeamDto>): Observable<JoueurWithTeamDto> {
-    // Remove ID for new entities
     const joueurToCreate = { ...joueur };
     delete (joueurToCreate as any).id;
     
-    // Set proper headers for JSON content
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
     
-    // Log the data being sent for debugging
     console.log('Sending player data to create:', joueurToCreate);
     
     return this.http.post<JoueurWithTeamDto>(this.apiUrl, joueurToCreate, { headers });
   }
 
   updateJoueur(id: number, joueur: Partial<JoueurWithTeamDto>): Observable<JoueurWithTeamDto> {
-    // Set proper headers for JSON content
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
     
-    // Log the data being sent for debugging
     console.log('Sending player data to update:', joueur);
     
     return this.http.put<JoueurWithTeamDto>(`${this.apiUrl}/${id}`, joueur, { headers });
@@ -74,7 +69,6 @@ export class JoueurService {
   }
 
   assignPlayerToTeam(playerId: number, equipeId: number): Observable<JoueurWithTeamDto> {
-    // Set proper headers for JSON content
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
@@ -83,7 +77,6 @@ export class JoueurService {
   }
 
   unassignPlayerFromTeam(playerId: number): Observable<JoueurWithTeamDto> {
-    // Set proper headers for JSON content
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });

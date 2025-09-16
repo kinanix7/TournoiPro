@@ -16,11 +16,6 @@ export class ArbitreService {
     return this.http.get<ArbitreWithTeamDto[]>(this.apiUrl);
   }
 
-  /**
-   * Get all referees with their team information
-   * This method provides team data without circular references
-   * @return Observable of referees with team information
-   */
   getAllArbitresWithTeamInfo(): Observable<ArbitreWithTeamDto[]> {
     return this.http.get<ArbitreWithTeamDto[]>(`${this.apiUrl}/with-teams`);
   }
@@ -30,7 +25,6 @@ export class ArbitreService {
   }
 
   createArbitre(arbitre: Partial<ArbitreWithTeamDto>): Observable<ArbitreWithTeamDto> {
-    // Remove ID for new entities
     const arbitreToCreate = { ...arbitre };
     delete (arbitreToCreate as any).id;
     return this.http.post<ArbitreWithTeamDto>(this.apiUrl, arbitreToCreate);
@@ -40,21 +34,11 @@ export class ArbitreService {
     return this.http.put<ArbitreWithTeamDto>(`${this.apiUrl}/${id}`, arbitre);
   }
 
-  /**
-   * Assign a referee to a team
-   * @param arbitreId The referee ID
-   * @param equipeId The team ID
-   * @return Observable of updated referee
-   */
   assignRefereeToTeam(arbitreId: number, equipeId: number): Observable<ArbitreWithTeamDto> {
     return this.http.put<ArbitreWithTeamDto>(`${this.apiUrl}/${arbitreId}/assign-team/${equipeId}`, {});
   }
 
-  /**
-   * Remove a referee from their team
-   * @param arbitreId The referee ID
-   * @return Observable of updated referee
-   */
+
   removeRefereeFromTeam(arbitreId: number): Observable<ArbitreWithTeamDto> {
     return this.http.put<ArbitreWithTeamDto>(`${this.apiUrl}/${arbitreId}/remove-team`, {});
   }

@@ -21,7 +21,6 @@ export class EquipeService {
   }
 
   createEquipe(equipe: Partial<EquipeWithPlayersDto>): Observable<EquipeWithPlayersDto> {
-    // Remove ID for new entities
     const equipeToCreate = { ...equipe };
     delete (equipeToCreate as any).id;
     return this.http.post<EquipeWithPlayersDto>(this.apiUrl, equipeToCreate);

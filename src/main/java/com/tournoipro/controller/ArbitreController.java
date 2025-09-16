@@ -28,7 +28,6 @@ public class ArbitreController {
     @PostMapping
     public ArbitreWithTeamDto createArbitre(@RequestBody Arbitre arbitre) {
         Arbitre createdArbitre = arbitreService.createArbitre(arbitre);
-        // Convert to DTO
         return new ArbitreWithTeamDto(
             createdArbitre.getId(),
             createdArbitre.getNom(),

@@ -19,9 +19,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Check if admin user already exists
         if (!userRepository.existsByUsername("admin")) {
-            // Create default admin user
             User admin = new User();
             admin.setUsername("admin");
             admin.setEmail("admin@tournoipro.com");
@@ -36,9 +34,7 @@ public class DataLoader implements CommandLineRunner {
             System.out.println("   Email: admin@tournoipro.com");
         }
 
-        // Check if test user already exists
         if (!userRepository.existsByUsername("user")) {
-            // Create default test user
             User user = new User();
             user.setUsername("user");
             user.setEmail("user@tournoipro.com");

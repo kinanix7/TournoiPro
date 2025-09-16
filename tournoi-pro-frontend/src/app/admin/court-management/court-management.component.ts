@@ -130,7 +130,6 @@ export class CourtManagementComponent implements OnInit {
     });
   }
 
-  // Helpers
   getCourtMatchCount(court: Terrain): number {
     return this.allMatches.filter(m => m.terrain?.id === court.id).length;
   }

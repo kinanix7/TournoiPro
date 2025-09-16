@@ -22,7 +22,7 @@ export class MatchService {
 
   createMatch(match: Partial<Match>): Observable<Match> {
     const matchToCreate = { ...match };
-    delete (matchToCreate as any).id; // bach ma ytsiftech l'id
+    delete (matchToCreate as any).id; 
     return this.http.post<Match>(this.apiUrl, matchToCreate);
   }
 
